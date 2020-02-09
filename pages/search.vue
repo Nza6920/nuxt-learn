@@ -2,7 +2,7 @@
     <div class="page">
       创建即配置
       <ul>
-        <li v-for="(item, idx) in list" :key="idx">
+        <li v-for="(item, idx) in $store.state.navbar.app" :key="idx">
             {{ item }}
         </li>
       </ul>
@@ -25,6 +25,12 @@
         return {
           list
         }
+      }
+    },
+    async fetch({store}) {  // fetch 处理 vuex , asyncData 处理组件数据
+      let {status, data: {list}} = await axios.get('http://localhost:3000/city/list')
+      if (status === 200) {
+        store.dispatch('navbar/add', list[0])
       }
     }
   }
